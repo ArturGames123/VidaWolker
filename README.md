@@ -1,2 +1,118 @@
-# VidaWolker
-Test
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VidaWolker - Cuide da Bianca Bebê</title>
+<style>
+body{font-family:Arial,sans-serif;background:#fffbe8;text-align:center;padding:20px}
+#bianca{font-size:100px;margin:20px;position:relative;display:inline-block}
+#necessidades{font-size:40px;position:absolute;top:0;right:-90px;white-space:nowrap}
+.btn{margin:10px;padding:15px 30px;font-size:18px;border:none;color:#fff;border-radius:10px;cursor:pointer}
+#btnTrocar{background:#4caf50}
+#btnMamadeira{background:#ff9800}
+#btnAvancar{background:#2196f3}
+#btnTalco,#btnPomada{background:#9c27b0;display:none}
+#btnUrinar,#btnDefecar{background:#03a9f4}
+#fraldasContainer{display:none;margin-top:10px}
+.btnFralda{background:#607d8b;margin:5px;padding:10px 20px;border-radius:8px;color:#fff;border:none}
+#fala{background:#fff;border:1px solid #ccc;padding:10px;border-radius:10px;margin-top:15px}
+</style>
+</head>
+<body>
+
+<h1>VidaWolker</h1>
+<p>Você é o pai da Bianca bebê</p>
+
+<div id="bianca">👶 <div id="necessidades"></div></div>
+
+<div>
+<button id="btnTrocar" class="btn">Trocar Fralda</button>
+<button id="btnTalco" class="btn">Talco</button>
+<button id="btnPomada" class="btn">Pomada</button>
+<button id="btnMamadeira" class="btn">Mamadeira</button>
+<button id="btnUrinar" class="btn">Urinar</button>
+<button id="btnDefecar" class="btn">Defecar</button>
+</div>
+
+<div id="fraldasContainer">
+<button class="btnFralda" data-nome="Pampers" data-vx="false" data-vc="false">Pampers</button>
+<button class="btnFralda" data-nome="Huggies" data-vx="true" data-vc="false">Huggies</button>
+<button class="btnFralda" data-nome="Turma da Mônica" data-vx="false" data-vc="true">Turma da Mônica</button>
+<button class="btnFralda" data-nome="Padrão" data-vx="true" data-vc="true">Padrão</button>
+<button class="btnFralda" data-nome="Personal" data-vx="cond" data-vc="cond">Personal</button>
+</div>
+
+<div style="margin-top:15px">
+<input id="inputComando" placeholder="/pee /pooped" style="padding:10px;font-size:16px">
+</div>
+
+<div id="fala"></div>
+
+<script>
+let xixi=0,coco=0,xBloq=false,cBloq=false;
+
+const n=document.getElementById("necessidades");
+const fala=document.getElementById("fala");
+
+function atualizar(){
+n.textContent="💧".repeat(xixi)+"💩".repeat(coco);
+}
+
+document.getElementById("btnTrocar").onclick=()=>{
+if((xixi&&!xBloq)||(coco&&!cBloq)){
+document.getElementById("btnTrocar").style.display="none";
+document.getElementById("btnTalco").style.display="inline-block";
+}else fala.textContent="⏳ Ainda não terminou";
+};
+
+document.getElementById("btnTalco").onclick=()=>{
+document.getElementById("btnTalco").style.display="none";
+document.getElementById("btnPomada").style.display="inline-block";
+};
+
+document.getElementById("btnPomada").onclick=()=>{
+document.getElementById("btnPomada").style.display="none";
+document.getElementById("fraldasContainer").style.display="block";
+};
+
+document.querySelectorAll(".btnFralda").forEach(b=>{
+b.onclick=()=>{
+xixi=0;coco=0;xBloq=false;cBloq=false;
+atualizar();
+document.getElementById("fraldasContainer").style.display="none";
+document.getElementById("btnTrocar").style.display="inline-block";
+fala.textContent="👶 Fralda trocada";
+};
+});
+
+document.getElementById("btnUrinar").onclick=()=>{
+if(!xBloq&&xixi>0){
+xixi--;atualizar();
+xBloq=true;
+setTimeout(()=>xBloq=false,30000);
+}
+};
+
+document.getElementById("btnDefecar").onclick=()=>{
+if(!cBloq&&coco>0){
+coco--;atualizar();
+cBloq=true;
+setTimeout(()=>cBloq=false,60000);
+}
+};
+
+document.getElementById("inputComando").addEventListener("keydown",e=>{
+if(e.key==="Enter"){
+const cmd=e.target.value.toLowerCase();
+if(cmd==="/pee"){xixi++;xBloq=true;setTimeout(()=>xBloq=false,30000);}
+if(cmd==="/pooped"){coco++;cBloq=true;setTimeout(()=>cBloq=false,60000);}
+atualizar();
+e.target.value="";
+}
+});
+</script>
+
+</body>
+</html>
+
